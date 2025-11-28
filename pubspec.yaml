@@ -30,6 +30,7 @@ flutter:
     - assets/
     - assets/logo/
     - assets/splash/
+    - assets/test/
   #   - images/a_dot_ham.jpeg
 
 
