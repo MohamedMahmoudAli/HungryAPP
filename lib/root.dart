@@ -33,7 +33,12 @@ class _RootStateState extends State<RootState> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(controller: pageController, children: pages),
+      body: PageView(
+        controller: pageController,
+        children: pages,
+
+        physics: NeverScrollableScrollPhysics(),
+      ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(top: 8),
         decoration: BoxDecoration(
@@ -46,6 +51,7 @@ class _RootStateState extends State<RootState> {
         child: BottomNavigationBar(
           elevation: 0,
           backgroundColor: Colors.transparent.withOpacity(0),
+          currentIndex: currentScreen,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.grey,
