@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hungry/features/auth/view/login_view.dart';
 import 'package:hungry/features/auth/view/signup_view.dart';
+import 'package:hungry/root.dart';
 import 'package:hungry/spalsh.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: SignupView(),
+      home: RootState(),
     );
   }
 }
