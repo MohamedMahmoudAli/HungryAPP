@@ -25,13 +25,29 @@ class _HomeViewState extends State<HomeView> {
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              floating: false,
+              scrolledUnderElevation: 0,
+              toolbarHeight: 120,
+              pinned: true,
+              leading: Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                    horizontal: 0,
+                  ),
+                  child: Column(children: [Gap(75), UserHeader()]),
+                ),
+              ),
+            ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.only(top: 100, left: 20, right: 20),
                 child: Column(
                   children: [
-                    Gap(75),
-                    UserHeader(),
                     Gap(20),
                     SearchField(),
                     Gap(30),
