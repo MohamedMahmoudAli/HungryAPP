@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:gap/gap.dart';
@@ -25,7 +27,17 @@ class CardItem extends StatelessWidget {
             Gap(10),
             Customtext(text: name, fontWeight: FontWeight.w600, size: 16),
             Customtext(text: desc, fontWeight: FontWeight.w300, size: 16),
-            Customtext(text: rate),
+            Row(
+              children: [
+                Customtext(text: rate),
+                Spacer(),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(CupertinoIcons.heart_fill),
+                  iconSize: 10,
+                ),
+              ],
+            ),
           ],
         ),
       ),

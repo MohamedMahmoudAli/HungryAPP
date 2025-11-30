@@ -30,22 +30,18 @@ class _HomeViewState extends State<HomeView> {
               elevation: 0,
               floating: false,
               scrolledUnderElevation: 0,
-              toolbarHeight: 120,
+              toolbarHeight: 130,
               pinned: true,
-              leading: Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 0,
-                  ),
+              flexibleSpace: FlexibleSpaceBar(
+                background: Padding(
+                  padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                   child: Column(children: [Gap(75), UserHeader()]),
                 ),
               ),
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(top: 100, left: 20, right: 20),
+                padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                 child: Column(
                   children: [
                     Gap(20),
@@ -65,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
               sliver: SliverGrid.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.68,
+                  childAspectRatio: 0.62,
                   mainAxisSpacing: 6,
                 ),
                 itemBuilder: (context, index) => CardItem(

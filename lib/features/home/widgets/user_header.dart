@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:gap/gap.dart';
@@ -30,7 +31,11 @@ class UserHeader extends StatelessWidget {
           ],
         ),
         Spacer(),
-        CircleAvatar(radius: 30),
+        CircleAvatar(
+          backgroundColor: AppColors.primaryColor,
+          radius: 30,
+          child: Icon(Icons.person, color: Colors.white, size: 40),
+        ),
       ],
     );
   }
