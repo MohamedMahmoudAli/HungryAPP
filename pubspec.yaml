@@ -31,6 +31,7 @@ flutter:
     - assets/logo/
     - assets/splash/
     - assets/test/
+    - assets/productView/
   #   - images/a_dot_ham.jpeg
 
 

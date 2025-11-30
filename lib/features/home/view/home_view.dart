@@ -6,6 +6,7 @@ import 'package:hungry/features/home/widgets/card_item.dart';
 import 'package:hungry/features/home/widgets/food_catgories.dart';
 import 'package:hungry/features/home/widgets/sreach_filed.dart';
 import 'package:hungry/features/home/widgets/user_header.dart';
+import 'package:hungry/features/product/view/product_details_view.dart';
 import 'package:hungry/shared/customText.dart';
 
 class HomeView extends StatefulWidget {
@@ -64,11 +65,21 @@ class _HomeViewState extends State<HomeView> {
                   childAspectRatio: 0.62,
                   mainAxisSpacing: 6,
                 ),
-                itemBuilder: (context, index) => CardItem(
-                  image: 'assets/test/test.png',
-                  desc: 'Wendy\'s Burger',
-                  name: 'Cheeseburger ',
-                  rate: "⭐ 4.9",
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailsView(),
+                      ),
+                    );
+                  },
+                  child: CardItem(
+                    image: 'assets/test/test.png',
+                    desc: 'Wendy\'s Burger',
+                    name: 'Cheeseburger ',
+                    rate: "⭐ 4.9",
+                  ),
                 ),
                 itemCount: 6,
               ),
