@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry/core/constants/app_colors.dart';
 import 'package:hungry/features/product/widget/spicy_Slider.dart';
+import 'package:hungry/features/product/widget/toppings_item.dart';
+import 'package:hungry/features/product/widget/total_bar.dart';
 import 'package:hungry/shared/customText.dart';
 
 class ProductDetailsView extends StatefulWidget {
@@ -28,34 +30,73 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Gap(20),
-            SpicySlider(
-              sliderValue: sliderValue,
-              onChanged: (value) {
-                setState(() {
-                  sliderValue = value.toInt();
-                });
-              },
-            ),
-            Gap(30),
-            Customtext(text: 'Toppings', size: 22, fontWeight: FontWeight.bold),
-            Gap(10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(
-                  15,
-                  (context) => Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: CircleAvatar(radius: 30),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Gap(20),
+              SpicySlider(
+                sliderValue: sliderValue,
+                onChanged: (value) {
+                  setState(() {
+                    sliderValue = value.toInt();
+                  });
+                },
+              ),
+              Gap(30),
+              Customtext(
+                text: 'Toppings',
+                size: 22,
+                fontWeight: FontWeight.bold,
+              ),
+              Gap(10),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(
+                    15,
+                    (context) => Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: ToppingsItem(
+                        ontap: () {
+                          print('Topping ${context + 1} tapped');
+                        },
+                        image: 'assets/test/topping.png',
+                        title: 'Topping ${context + 1}',
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              Gap(30),
+              Customtext(
+                text: 'Side options',
+                size: 22,
+                fontWeight: FontWeight.bold,
+              ),
+              Gap(10),
+
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(
+                    15,
+                    (context) => Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: ToppingsItem(
+                        ontap: () {
+                          print('Topping ${context + 1} tapped');
+                        },
+                        image: 'assets/test/topping.png',
+                        title: 'Topping ${context + 1}',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              TotalBar(total: 30, onAddToCart: () {}),
+            ],
+          ),
         ),
       ),
     );
