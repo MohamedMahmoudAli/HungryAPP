@@ -14,28 +14,26 @@ class CartView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
-                children: List.generate(
-                  4,
-                  (context) => Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: card_item(),
-                  ),
-                ),
-              ),
-              Gap(20),
-              TotalBar(
-                total: 45.99,
-                onAddToCart: () {
-                  // Add to cart action
-                },
-              ),
-            ],
-          ),
+        padding: const EdgeInsets.only(
+          top: 15.0,
+          bottom: 100,
+          right: 15.0,
+          left: 15.0,
+        ),
+        child: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return const card_item();
+          },
+        ),
+      ),
+      bottomSheet: Container(
+        height: 100,
+        child: TotalBar(
+          total: 45.99,
+          onAddToCart: () {
+            // Add to cart action
+          },
         ),
       ),
     );
