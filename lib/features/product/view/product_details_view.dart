@@ -5,6 +5,7 @@ import 'package:hungry/features/product/widget/spicy_Slider.dart';
 import 'package:hungry/features/product/widget/toppings_item.dart';
 import 'package:hungry/features/product/widget/total_bar.dart';
 import 'package:hungry/shared/customText.dart';
+import 'package:hungry/shared/total_bar.dart';
 
 class ProductDetailsView extends StatefulWidget {
   ProductDetailsView({super.key});
