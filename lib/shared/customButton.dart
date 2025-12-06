@@ -3,9 +3,17 @@ import 'package:hungry/core/constants/app_colors.dart';
 import 'package:hungry/shared/customText.dart';
 
 class Custombutton extends StatelessWidget {
-  const Custombutton({super.key, this.ontap, required this.text});
+  const Custombutton({
+    super.key,
+    this.ontap,
+    required this.text,
+    this.color,
+    this.width,
+  });
   final Function()? ontap;
   final String text;
+  final Color? color;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +23,13 @@ class Custombutton extends StatelessWidget {
         width: double.infinity,
         height: 55,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: color ?? AppColors.primaryColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
           child: Customtext(
             text: text,
-            color: AppColors.primaryColor,
+            color: Colors.white,
             size: 25,
             fontWeight: FontWeight.bold,
           ),

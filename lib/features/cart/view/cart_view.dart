@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:hungry/features/cart/Widgets/RemoveButton%20.dart';
 import 'package:hungry/features/cart/Widgets/card_item.dart';
-import 'package:hungry/features/cart/Widgets/qauntaty_widget.dart';
-import 'package:hungry/shared/customText.dart';
 import 'package:hungry/shared/total_bar.dart';
 
 class CartView extends StatelessWidget {
@@ -12,7 +8,11 @@ class CartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.only(
           top: 15.0,
