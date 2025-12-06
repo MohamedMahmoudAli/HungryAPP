@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungry/features/cart/Widgets/card_item.dart';
+import 'package:hungry/features/checkout/view/checkout_view.dart';
 import 'package:hungry/shared/total_bar.dart';
 
 class CartView extends StatelessWidget {
@@ -29,12 +30,7 @@ class CartView extends StatelessWidget {
       ),
       bottomSheet: Container(
         height: 100,
-        child: TotalBar(
-          total: 45.99,
-          onAddToCart: () {
-            // Add to cart action
-          },
-        ),
+        child: TotalBar(total: 45.99, onAddToCart: () {}),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungry/core/constants/app_colors.dart';
+import 'package:hungry/features/checkout/view/checkout_view.dart';
 
 class TotalBar extends StatelessWidget {
   const TotalBar({super.key, required this.total, required this.onAddToCart});
@@ -38,7 +39,12 @@ class TotalBar extends StatelessWidget {
 
           // RIGHT SIDE BUTTON
           GestureDetector(
-            onTap: onAddToCart(),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CheckoutView()),
+              );
+            },
             child: Container(
               width: 150,
               height: 50,
@@ -55,10 +61,10 @@ class TotalBar extends StatelessWidget {
               ),
               child: Center(
                 child: const Text(
-                  "Add To Cart",
+                  "Checkout",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
