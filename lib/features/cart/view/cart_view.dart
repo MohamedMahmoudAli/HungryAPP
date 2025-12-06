@@ -30,7 +30,7 @@ class CartView extends StatelessWidget {
       ),
       bottomSheet: Container(
         height: 100,
-        child: TotalBar(total: 45.99, onAddToCart: () {}),
+        child: TotalBar(total: 45.99, title: "Checkout", onAddToCart: () {}),
       ),
     );
   }

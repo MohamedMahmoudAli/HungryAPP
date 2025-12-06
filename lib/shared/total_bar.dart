@@ -3,9 +3,15 @@ import 'package:hungry/core/constants/app_colors.dart';
 import 'package:hungry/features/checkout/view/checkout_view.dart';
 
 class TotalBar extends StatelessWidget {
-  const TotalBar({super.key, required this.total, required this.onAddToCart});
+  const TotalBar({
+    super.key,
+    required this.total,
+    required this.onAddToCart,
+    required this.title,
+  });
   final double total;
   final Function onAddToCart;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +24,8 @@ class TotalBar extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Total",
+              Text(
+                title,
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 16,

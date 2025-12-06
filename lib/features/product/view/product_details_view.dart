@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hungry/core/constants/app_colors.dart';
 import 'package:hungry/features/product/widget/spicy_Slider.dart';
 import 'package:hungry/features/product/widget/toppings_item.dart';
-import 'package:hungry/features/product/widget/total_bar.dart';
 import 'package:hungry/shared/customText.dart';
 import 'package:hungry/shared/total_bar.dart';
 
@@ -95,7 +93,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   ),
                 ),
               ),
-              TotalBar(total: 30, onAddToCart: () {}),
+              TotalBar(total: 30, title: 'Checkout', onAddToCart: () {}),
             ],
           ),
         ),

@@ -126,8 +126,18 @@ class _CheckoutViewState extends State<CheckoutView> {
         ),
       ),
       bottomSheet: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white,
+              blurRadius: 20,
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
         height: 100,
-        child: TotalBar(total: 45.99, onAddToCart: () {}),
+        child: TotalBar(total: 45.99, title: "Pay Now", onAddToCart: () {}),
       ),
     );
   }
