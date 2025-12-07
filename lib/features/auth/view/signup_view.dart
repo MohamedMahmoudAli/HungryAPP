@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry/core/constants/app_colors.dart';
+import 'package:hungry/features/auth/view/login_view.dart';
 import 'package:hungry/shared/customButton.dart';
 import 'package:hungry/shared/customText.dart';
 import 'package:hungry/shared/customTextFormField.dart';
@@ -19,70 +20,95 @@ class SignupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: Colors.white,
       body: Form(
         key: _formKey,
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Gap(80),
-                    SvgPicture.asset("assets/logo/hungry.svg"),
-                    Gap(10),
-                    Customtext(
-                      text: "Welcome Back Discover Delcious Food",
-                      color: Colors.white,
-                      size: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    Gap(50),
-                    Customtextformfield(
-                      hintText: "Name",
-                      isPassword: false,
-                      controller: nameController,
-                    ),
-                    Gap(25),
-
-                    Customtextformfield(
-                      hintText: "Email Address",
-                      isPassword: false,
-                      controller: emailController,
-                    ),
-                    Gap(25),
-                    Customtextformfield(
-                      hintText: "phone",
-                      isPassword: false,
-                      controller: phoneController,
-                    ),
-                    Gap(25),
-                    Customtextformfield(
-                      hintText: "password",
-                      isPassword: true,
-                      controller: passwordController,
-                    ),
-                    Gap(25),
-                    Customtextformfield(
-                      hintText: "confirm password",
-                      isPassword: true,
-                      controller: confirmPassword,
-                    ),
-
-                    Gap(40),
-                    Custombutton(
-                      text: "Sign Up",
-                      ontap: () {
-                        if (_formKey.currentState!.validate()) {
-                          print("Sign Up Successful");
-                        }
-                      },
-                    ),
-                  ],
+            child: Column(
+              children: [
+                Gap(120),
+                SvgPicture.asset(
+                  "assets/logo/hungry.svg",
+                  color: AppColors.primaryColor,
                 ),
-              ),
+                Gap(10),
+                Customtext(
+                  text: "Welcome Back Discover Delcious Food",
+                  color: AppColors.primaryColor,
+                  size: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+                Gap(150),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
+                      ),
+                    ),
+
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Gap(20),
+                            Customtextformfield(
+                              hintText: "Name",
+                              isPassword: false,
+                              controller: nameController,
+                            ),
+                            Gap(25),
+
+                            Customtextformfield(
+                              hintText: "Email Address",
+                              isPassword: false,
+                              controller: emailController,
+                            ),
+
+                            Gap(25),
+                            Customtextformfield(
+                              hintText: "password",
+                              isPassword: true,
+                              controller: passwordController,
+                            ),
+
+                            Gap(40),
+                            Custombutton(
+                              text: "Sign Up",
+                              color: Colors.white,
+                              textcolor: AppColors.primaryColor,
+
+                              ontap: () {
+                                if (_formKey.currentState!.validate()) {}
+                              },
+                            ),
+                            Gap(20),
+                            Custombutton(
+                              text: "Go to Login",
+                              color: AppColors.primaryColor,
+                              textcolor: Colors.white,
+
+                              ontap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (c) => LoginView(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

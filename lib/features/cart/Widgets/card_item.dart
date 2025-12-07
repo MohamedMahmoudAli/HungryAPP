@@ -18,7 +18,13 @@ class card_item extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset('assets/test/test.png', height: 100, width: 100),
+                Center(
+                  child: Image.asset(
+                    'assets/test/test.png',
+                    height: 120,
+                    width: 120,
+                  ),
+                ),
                 Gap(10),
                 Customtext(text: "Hamburger ", fontWeight: FontWeight.bold),
                 Gap(5),

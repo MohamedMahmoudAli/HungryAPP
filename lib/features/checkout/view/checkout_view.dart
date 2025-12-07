@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry/features/checkout/widgets/orderDetails.dart';
 import 'package:hungry/features/checkout/widgets/order_summary_widget.dart';
+import 'package:hungry/features/checkout/widgets/succes_dialog.dart'
+    show PaymentSuccessView, ScuessDialog;
 import 'package:hungry/shared/customText.dart';
 import 'package:hungry/shared/total_bar.dart';
 
@@ -137,7 +139,17 @@ class _CheckoutViewState extends State<CheckoutView> {
           ],
         ),
         height: 100,
-        child: TotalBar(total: 45.99, title: "Pay Now", onAddToCart: () {}),
+        child: TotalBar(
+          total: 45.99,
+          title: "Pay Now",
+          onAddToCart: () {
+            print("========================");
+            showAdaptiveDialog(
+              context: context,
+              builder: (context) => PaymentSuccessView(),
+            );
+          },
+        ),
       ),
     );
   }

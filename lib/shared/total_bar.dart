@@ -25,7 +25,7 @@ class TotalBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                "Total",
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 16,
@@ -46,10 +46,7 @@ class TotalBar extends StatelessWidget {
           // RIGHT SIDE BUTTON
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CheckoutView()),
-              );
+              onAddToCart();
             },
             child: Container(
               width: 150,
@@ -66,8 +63,8 @@ class TotalBar extends StatelessWidget {
                 ],
               ),
               child: Center(
-                child: const Text(
-                  "Checkout",
+                child: Text(
+                  title,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

@@ -93,9 +93,30 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   ),
                 ),
               ),
-              TotalBar(total: 30, title: 'Checkout', onAddToCart: () {}),
+              Gap(180),
             ],
           ),
+        ),
+      ),
+      bottomSheet: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(5),
+            topRight: Radius.circular(5),
+          ),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white,
+              blurRadius: 20,
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
+        height: 130,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: TotalBar(total: 30, title: 'Checkout', onAddToCart: () {}),
         ),
       ),
     );

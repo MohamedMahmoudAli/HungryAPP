@@ -44,17 +44,35 @@ class _CustomtextformfieldState extends State<Customtextformfield> {
                 },
                 child: Icon(
                   obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.grey,
+
+                  color: Colors.white,
                 ),
               )
             : null,
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Colors.transparent,
         hintText: widget.hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
+        focusColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: Colors.white, // White border when not focused
+            width: 2,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: Colors.white, // White border when focused
+            width: 2,
+          ),
+        ),
+
+        hintStyle: TextStyle(color: Colors.white),
       ),
     );
   }
