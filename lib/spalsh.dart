@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hungry/core/constants/app_colors.dart';
+import 'package:hungry/features/auth/view/login_view.dart';
 import 'package:hungry/root.dart';
 
 class SpalshView extends StatefulWidget {
@@ -34,7 +35,7 @@ class _SpalshViewState extends State<SpalshView>
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => RootState()),
+        MaterialPageRoute(builder: (context) => LoginView()),
       );
     });
   }

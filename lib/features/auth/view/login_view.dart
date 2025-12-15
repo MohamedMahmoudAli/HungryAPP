@@ -2,16 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry/core/constants/app_colors.dart';
+import 'package:hungry/core/network/api_error.dart';
+import 'package:hungry/features/auth/data/auth_repo.dart';
 import 'package:hungry/root.dart';
 import 'package:hungry/shared/customButton.dart';
 import 'package:hungry/shared/customText.dart';
 import 'package:hungry/shared/customTextFormField.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   LoginView({super.key});
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController(text: 'Sonic3@gmail.com');
+  final passController = TextEditingController(text: '123456789');
+  bool isLoading = false;
+  final authRepo = AuthRepo();
+
+  Future<void> login() async {
+    if (!formKey.currentState!.validate()) return;
+    setState(() => isLoading = true);
+
+    try {
+      final user = await authRepo.login(
+        emailController.text.trim(),
+        passController.text.trim(),
+      );
+      if (user != null)
+        Navigator.push(context, MaterialPageRoute(builder: (_) => RootState()));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +56,7 @@ class LoginView extends StatelessWidget {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Center(
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               children: [
                 Gap(100),
@@ -60,18 +96,14 @@ class LoginView extends StatelessWidget {
                             Customtextformfield(
                               hintText: 'Password',
                               isPassword: true,
-                              controller: passwordController,
+                              controller: passController,
                             ),
                             Gap(40),
                             Custombutton(
                               text: "Log In",
                               color: Colors.white,
                               textcolor: AppColors.primaryColor,
-                              ontap: () {
-                                if (_formKey.currentState!.validate()) {
-                                  print("Login Successful");
-                                }
-                              },
+                              ontap: login,
                             ),
                             Gap(20),
                             Custombutton(
