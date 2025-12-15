@@ -23,7 +23,19 @@ class CardItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(image, width: 180),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Positioned(
+                  right: 0,
+                  left: 0,
+                  bottom: -30,
+                  child: Image.asset("assets/logo/shade.png"),
+                ),
+
+                Center(child: Image.asset(image, width: 120, height: 120)),
+              ],
+            ),
             Gap(10),
             Customtext(text: name, fontWeight: FontWeight.w600, size: 16),
             Customtext(text: desc, fontWeight: FontWeight.w300, size: 16),
