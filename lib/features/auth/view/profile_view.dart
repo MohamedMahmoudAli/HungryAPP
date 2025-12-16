@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry/core/constants/app_colors.dart';
+import 'package:hungry/features/auth/view/login_view.dart';
 import 'package:hungry/features/auth/widgets/user_textformfield.dart';
 import 'package:hungry/shared/customText.dart';
 
@@ -128,18 +129,29 @@ class _ProfileViewState extends State<ProfileView> {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: AppColors.primaryColor),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    Customtext(text: "Log out", color: AppColors.primaryColor),
-                    Icon(Icons.logout, color: AppColors.primaryColor),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (c) => LoginView()),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: AppColors.primaryColor),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Customtext(
+                        text: "Log out",
+                        color: AppColors.primaryColor,
+                      ),
+                      Icon(Icons.logout, color: AppColors.primaryColor),
+                    ],
+                  ),
                 ),
               ),
             ],

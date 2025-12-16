@@ -32,54 +32,57 @@ class _RootStateState extends State<RootState> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: pageController,
-        children: pages,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: PageView(
+          controller: pageController,
+          children: pages,
 
-        physics: NeverScrollableScrollPhysics(),
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.only(top: 8),
-        decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
-          ),
+          physics: NeverScrollableScrollPhysics(),
         ),
-        child: BottomNavigationBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent.withOpacity(0),
-          currentIndex: currentScreen,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey,
-          onTap: (value) {
-            setState(() {
-              currentScreen = value;
-              pageController.jumpToPage(currentScreen);
-              print("the current screen is $currentScreen");
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.home),
-              label: "Home",
+        bottomNavigationBar: Container(
+          padding: EdgeInsets.only(top: 8),
+          decoration: BoxDecoration(
+            color: AppColors.primaryColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.cart),
-              label: "Cart",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.local_restaurant_sharp),
-              label: "Orders",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.person),
-              label: "Profile",
-            ),
-          ],
+          ),
+          child: BottomNavigationBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent.withOpacity(0),
+            currentIndex: currentScreen,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.grey,
+            onTap: (value) {
+              setState(() {
+                currentScreen = value;
+                pageController.jumpToPage(currentScreen);
+                print("the current screen is $currentScreen");
+              });
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.home),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.cart),
+                label: "Cart",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.local_restaurant_sharp),
+                label: "Orders",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.person),
+                label: "Profile",
+              ),
+            ],
+          ),
         ),
       ),
     );
