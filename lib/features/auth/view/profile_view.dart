@@ -137,18 +137,9 @@ class _ProfileViewState extends State<ProfileView> {
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             appBar: AppBar(
-              toolbarHeight: 20.0,
+              toolbarHeight: 0.0,
               backgroundColor: Colors.white,
               scrolledUnderElevation: 0.0,
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (c) => AboutScreen()),
-                  );
-                },
-                icon: Icon(Icons.info),
-              ),
             ),
 
             body: Padding(
@@ -179,7 +170,17 @@ class _ProfileViewState extends State<ProfileView> {
                               horizontal: 8,
                               vertical: 0,
                             ),
-                            child: Icon(CupertinoIcons.settings_solid),
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (c) => AboutScreen(),
+                                  ),
+                                );
+                              },
+                              icon: Icon(Icons.info),
+                            ),
                           ),
                         ],
                       ),

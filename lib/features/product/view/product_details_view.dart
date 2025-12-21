@@ -8,7 +8,6 @@ import 'package:hungry/features/product/widget/spicy_Slider.dart';
 import 'package:hungry/features/product/widget/toppings_item.dart';
 import 'package:hungry/shared/customButton.dart';
 import 'package:hungry/shared/customText.dart';
-import 'package:hungry/shared/total_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductDetailsView extends StatefulWidget {
@@ -21,12 +20,16 @@ class ProductDetailsView extends StatefulWidget {
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
   double value = 0.5;
+
+  // FIX: Separate the selection variables
   int? selectedToppingIndex;
+  int? selectedOptionIndex;
 
   List<ToppingModel>? toppings;
   List<ToppingModel>? options;
 
   ProductRepo productRepo = ProductRepo();
+
   Future<void> getToppings() async {
     final res = await productRepo.getToppings();
     setState(() {
@@ -66,7 +69,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
             ),
           ),
         ),
-
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
           child: SingleChildScrollView(
@@ -79,7 +81,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   img: widget.productImage,
                   onChanged: (v) => setState(() => value = v),
                 ),
-
                 Gap(40),
                 CustomText(text: 'Toppings', size: 18),
                 Gap(10),
@@ -108,7 +109,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     }),
                   ),
                 ),
-
                 Gap(25),
                 CustomText(text: 'Side Options', size: 18),
                 Gap(10),
@@ -117,7 +117,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: List.generate(options?.length ?? 4, (index) {
-                      final isSelected = selectedToppingIndex == index;
+                      // FIX: Use selectedOptionIndex here
+                      final isSelected = selectedOptionIndex == index;
 
                       final option = options?[index];
                       if (option == null) {
@@ -132,8 +133,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               : AppColors.primary.withOpacity(0.1),
                           imageUrl: option.image,
                           title: option.name,
+                          // FIX: Update selectedOptionIndex here
                           onAdd: () =>
-                              setState(() => selectedToppingIndex = index),
+                              setState(() => selectedOptionIndex = index),
                         ),
                       );
                     }),
@@ -144,7 +146,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
             ),
           ),
         ),
-
         bottomSheet: Container(
           height: 150,
           decoration: BoxDecoration(
@@ -155,13 +156,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 AppColors.primary,
                 AppColors.primary,
                 AppColors.primary,
+                AppColors.primary,
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
             borderRadius: BorderRadius.circular(30),
           ),
-
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Row(

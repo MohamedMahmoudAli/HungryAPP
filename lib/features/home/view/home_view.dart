@@ -2,9 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:hungry/core/constants/app_colors.dart';
 import 'package:hungry/features/home/data/model/product_model.dart';
 import 'package:hungry/features/home/data/repo/product_repo.dart';
 import 'package:hungry/features/home/widgets/card_item.dart';
@@ -12,7 +10,6 @@ import 'package:hungry/features/home/widgets/food_catgories.dart';
 import 'package:hungry/features/home/widgets/sreach_filed.dart';
 import 'package:hungry/features/home/widgets/user_header.dart';
 import 'package:hungry/features/product/view/product_details_view.dart';
-import 'package:hungry/shared/customText.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeView extends StatefulWidget {
