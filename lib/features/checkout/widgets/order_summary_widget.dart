@@ -18,17 +18,17 @@ class OrderSummaryWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Customtext(
+        CustomText(
           text: tiile,
           size: Issmall ? 12 : 18,
           color: bold ? Colors.black : Colors.grey.shade400,
-          fontWeight: bold ? FontWeight.bold : FontWeight.w600,
+          weight: bold ? FontWeight.bold : FontWeight.w600,
         ),
-        Customtext(
+        CustomText(
           text: "\$$price",
           size: Issmall ? 12 : 18,
           color: bold ? Colors.black : Colors.grey.shade400,
-          fontWeight: bold ? FontWeight.bold : FontWeight.w600,
+          weight: bold ? FontWeight.bold : FontWeight.w600,
         ),
       ],
     );

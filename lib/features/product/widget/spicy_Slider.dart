@@ -1,45 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry/core/constants/app_colors.dart';
+import 'package:hungry/shared/customText.dart';
 
-class SpicySlider extends StatelessWidget {
-  SpicySlider({super.key, required this.sliderValue, required this.onChanged});
-  final int sliderValue;
+class SpicySlider extends StatefulWidget {
+  const SpicySlider({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    required this.img,
+  });
+  final double value;
   final ValueChanged<double> onChanged;
+  final String img;
 
   @override
+  State<SpicySlider> createState() => _SpicySliderState();
+}
+
+class _SpicySliderState extends State<SpicySlider> {
+  @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Image.asset('assets/productView/burger.png', height: 200, width: 150),
-        Gap(20),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Customize Your Burger \n to Your Tastes. Ultimate \n Experience',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+        SizedBox(
+          height: 200,
+          width: double.infinity,
+          child: Image.network(widget.img),
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40.0),
+          child: SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 3),
+              overlayShape: const RoundSliderOverlayShape(overlayRadius: 10),
+              trackHeight: 3,
             ),
-            Gap(10),
-            Text(
-              'Spicy',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Slider(
-              value: sliderValue.toDouble(),
+
+            child: Slider(
               min: 0,
-              max: 15,
-              divisions: 10,
-              label: sliderValue.round().toString(),
-              activeColor: AppColors.primaryColor,
-              inactiveColor: Colors.grey,
-              onChanged: onChanged,
+              max: 1,
+              value: widget.value,
+              onChanged: widget.onChanged,
+              inactiveColor: Colors.grey.shade900.withOpacity(0.2),
+              activeColor: AppColors.primary.withOpacity(0.7),
             ),
-            SizedBox(
-              width: 200,
-              child: Row(children: [Text("🥶"), Spacer(), Text("🌶️")]),
-            ),
-          ],
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 53),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(text: 'Cold 🥶', weight: FontWeight.bold, size: 12),
+              Gap(100),
+              CustomText(text: '🌶️ Hot', weight: FontWeight.bold, size: 12),
+            ],
+          ),
         ),
       ],
     );

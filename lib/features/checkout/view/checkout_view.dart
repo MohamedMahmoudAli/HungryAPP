@@ -34,7 +34,7 @@ class _CheckoutViewState extends State<CheckoutView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Customtext(text: "Order summary", size: 20),
+            CustomText(text: "Order summary", size: 20),
             Gap(20),
             Orderdetails(
               order: '16.48',
@@ -45,10 +45,10 @@ class _CheckoutViewState extends State<CheckoutView> {
             ),
 
             Gap(50),
-            Customtext(
+            CustomText(
               text: "Payment methods",
               size: 20,
-              fontWeight: FontWeight.bold,
+              weight: FontWeight.bold,
             ),
             Gap(20),
             ListTile(
@@ -65,7 +65,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                 borderRadius: BorderRadius.circular(10),
               ),
               contentPadding: EdgeInsets.all(10),
-              title: Customtext(text: "Cash on Delivery", color: Colors.white),
+              title: CustomText(text: "Cash on Delivery", color: Colors.white),
               trailing: Radio<String>(
                 value: "Cash",
                 activeColor: Colors.white,
@@ -90,8 +90,8 @@ class _CheckoutViewState extends State<CheckoutView> {
                 borderRadius: BorderRadius.circular(10),
               ),
               contentPadding: EdgeInsets.all(10),
-              title: Customtext(text: "Debit Card", color: Colors.white),
-              subtitle: Customtext(
+              title: CustomText(text: "Debit Card", color: Colors.white),
+              subtitle: CustomText(
                 text: "**** **** 22222",
                 color: Colors.white,
               ),
@@ -118,7 +118,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     activeColor: Color(0xffEF2A39),
                   ),
                 ),
-                Customtext(
+                CustomText(
                   text: 'Save card details for future payments',
                   color: Colors.grey,
                 ),

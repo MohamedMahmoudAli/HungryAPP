@@ -1,78 +1,82 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hungry/core/constants/app_colors.dart';
 
-class Customtextformfield extends StatefulWidget {
-  const Customtextformfield({
+class CustomTxtfield extends StatefulWidget {
+  const CustomTxtfield({
     super.key,
-    required this.hintText,
+    required this.hint,
     required this.isPassword,
     required this.controller,
   });
-  final String hintText;
+  final String hint;
   final bool isPassword;
   final TextEditingController controller;
 
   @override
-  State<Customtextformfield> createState() => _CustomtextformfieldState();
+  State<CustomTxtfield> createState() => _CustomTxtfieldState();
 }
 
-class _CustomtextformfieldState extends State<Customtextformfield> {
-  @override
-  late bool obscureText;
+class _CustomTxtfieldState extends State<CustomTxtfield> {
+  late bool _obscureText;
+
   @override
   void initState() {
-    obscureText = widget.isPassword;
+    _obscureText = widget.isPassword;
     super.initState();
   }
 
+  void _togglePassword() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controller,
-      obscureText: obscureText,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please fill${widget.hintText} field';
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        suffixIcon: widget.isPassword
-            ? GestureDetector(
-                onTap: () {
-                  setState(() {
-                    obscureText = !obscureText;
-                  });
-                },
-                child: Icon(
-                  obscureText ? Icons.visibility_off : Icons.visibility,
-
-                  color: Colors.white,
-                ),
-              )
-            : null,
-        filled: true,
-        fillColor: Colors.transparent,
-        hintText: widget.hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        focusColor: Colors.white,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: Colors.white, // White border when not focused
-            width: 2,
+    return SizedBox(
+      height: 45,
+      child: TextFormField(
+        cursorHeight: 20,
+        style: TextStyle(fontSize: 14, color: Colors.white),
+        controller: widget.controller,
+        cursorColor: AppColors.primary,
+        validator: (v) {
+          if (v == null || v.isEmpty) {
+            return 'please fill ${widget.hint}';
+          }
+          null;
+        },
+        obscureText: _obscureText,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+          suffixIcon: widget.isPassword
+              ? GestureDetector(
+                  onTap: _togglePassword,
+                  child: Icon(
+                    CupertinoIcons.eye,
+                    color: Colors.white,
+                    size: 19,
+                  ),
+                )
+              : null,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.grey, width: 0.4),
           ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: Colors.white, // White border when focused
-            width: 2,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey, width: 0.7),
           ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.red),
+          ),
+          hintText: widget.hint,
+          hintStyle: TextStyle(color: Colors.white),
+          fillColor: Colors.transparent.withOpacity(0.3),
+          filled: true,
         ),
-
-        hintStyle: TextStyle(color: Colors.white),
       ),
     );
   }

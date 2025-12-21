@@ -5,29 +5,62 @@ import 'package:hungry/features/auth/view/profile_view.dart';
 import 'package:hungry/features/cart/view/cart_view.dart';
 import 'package:hungry/features/home/view/home_view.dart';
 import 'package:hungry/features/orderHistory/view/orederHistory_view.dart';
+import 'package:hungry/shared/customText.dart';
+import 'package:hungry/shared/glass_nav.dart';
 
-class RootState extends StatefulWidget {
-  const RootState({super.key});
+class Root extends StatefulWidget {
+  Root({super.key});
 
   @override
-  State<RootState> createState() => _RootStateState();
+  State<Root> createState() => _RootState();
 }
 
-class _RootStateState extends State<RootState> {
-  late PageController pageController;
-  late List<Widget> pages;
+class _RootState extends State<Root> with TickerProviderStateMixin {
+  late PageController controller;
+  late List<Widget> screens;
   int currentScreen = 0;
+
+  late List<AnimationController> iconControllers;
+
   @override
   void initState() {
-    pageController = PageController(initialPage: currentScreen);
-    pages = [
-      HomeView(),
-      CartView(),
-      OrderhistoryView(),
-      ProfileView(),
-      // Add your pages here
-    ];
     super.initState();
+
+    screens = [HomeView(), CartView(), OrderHistoryView(), ProfileView()];
+
+    controller = PageController(initialPage: 0);
+    iconControllers = List.generate(
+      4,
+      (index) => AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 300),
+      ),
+    );
+    iconControllers[currentScreen].forward();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    for (var c in iconControllers) c.dispose();
+    super.dispose();
+  }
+
+  void _onTabTapped(int index) {
+    setState(() => currentScreen = index);
+    controller.animateToPage(
+      index,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOutExpo,
+    );
+
+    // Animate selected icon
+    iconControllers[index].forward();
+
+    // Reverse others
+    for (var i = 0; i < iconControllers.length; i++) {
+      if (i != index) iconControllers[i].reverse();
+    }
   }
 
   @override
@@ -35,54 +68,50 @@ class _RootStateState extends State<RootState> {
     return PopScope(
       canPop: false,
       child: Scaffold(
+        extendBody: true,
         body: PageView(
-          controller: pageController,
-          children: pages,
-
+          controller: controller,
           physics: NeverScrollableScrollPhysics(),
+          children: screens,
         ),
-        bottomNavigationBar: Container(
-          padding: EdgeInsets.only(top: 8),
-          decoration: BoxDecoration(
-            color: AppColors.primaryColor,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
+        bottomNavigationBar: GlassBottomNavBar(
+          currentIndex: currentScreen,
+          onTap: _onTabTapped,
+          items: [
+            BottomNavItemData(
+              label: 'Home',
+              icon: Icon(CupertinoIcons.home),
+              filledIcon: AnimatedIcon(
+                icon: AnimatedIcons.menu_home,
+                progress: iconControllers[0],
+              ),
             ),
-          ),
-          child: BottomNavigationBar(
-            elevation: 0,
-            backgroundColor: Colors.transparent.withOpacity(0),
-            currentIndex: currentScreen,
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.grey,
-            onTap: (value) {
-              setState(() {
-                currentScreen = value;
-                pageController.jumpToPage(currentScreen);
-                print("the current screen is $currentScreen");
-              });
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.home),
-                label: "Home",
+            BottomNavItemData(
+              label: 'Cart',
+              icon: Icon(CupertinoIcons.cart),
+              filledIcon: Badge(
+                label: CustomText(text: '1', size: 10),
+                child: AnimatedIcon(
+                  icon: AnimatedIcons.view_list,
+                  progress: iconControllers[0],
+                ),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.cart),
-                label: "Cart",
+            ),
+            BottomNavItemData(
+              label: 'History',
+              icon: Icon(Icons.table_bar_outlined),
+              filledIcon: Icon(Icons.table_bar),
+            ),
+            BottomNavItemData(
+              label: 'Profile',
+              icon: Icon(CupertinoIcons.person_alt_circle),
+              filledIcon: AnimatedIcon(
+                size: 20,
+                icon: AnimatedIcons.arrow_menu,
+                progress: iconControllers[0],
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.local_restaurant_sharp),
-                label: "Orders",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.person),
-                label: "Profile",
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

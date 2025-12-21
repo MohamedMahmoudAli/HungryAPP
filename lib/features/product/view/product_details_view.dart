@@ -1,122 +1,201 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry/core/constants/app_colors.dart';
+import 'package:hungry/features/home/data/model/topping_model.dart';
+import 'package:hungry/features/home/data/repo/product_repo.dart';
 import 'package:hungry/features/product/widget/spicy_Slider.dart';
 import 'package:hungry/features/product/widget/toppings_item.dart';
+import 'package:hungry/shared/customButton.dart';
 import 'package:hungry/shared/customText.dart';
 import 'package:hungry/shared/total_bar.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductDetailsView extends StatefulWidget {
-  ProductDetailsView({super.key});
+  const ProductDetailsView({super.key, required this.productImage});
+  final String productImage;
 
   @override
   State<ProductDetailsView> createState() => _ProductDetailsViewState();
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
-  int sliderValue = 4;
+  double value = 0.5;
+  int? selectedToppingIndex;
+
+  List<ToppingModel>? toppings;
+  List<ToppingModel>? options;
+
+  ProductRepo productRepo = ProductRepo();
+  Future<void> getToppings() async {
+    final res = await productRepo.getToppings();
+    setState(() {
+      toppings = res;
+    });
+  }
+
+  Future<void> getOptions() async {
+    final res = await productRepo.getOptions();
+    setState(() {
+      options = res;
+    });
+  }
+
+  @override
+  void initState() {
+    getToppings();
+    getOptions();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Product Details'),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gap(20),
-              SpicySlider(
-                sliderValue: sliderValue,
-                onChanged: (value) {
-                  setState(() {
-                    sliderValue = value.toInt();
-                  });
-                },
-              ),
-              Gap(30),
-              Customtext(
-                text: 'Toppings',
-                size: 22,
-                fontWeight: FontWeight.bold,
-              ),
-              Gap(10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    15,
-                    (context) => Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: ToppingsItem(
-                        ontap: () {
-                          print('Topping ${context + 1} tapped');
-                        },
-                        image: 'assets/test/topping.png',
-                        title: 'Topping ${context + 1}',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Gap(30),
-              Customtext(
-                text: 'Side options',
-                size: 22,
-                fontWeight: FontWeight.bold,
-              ),
-              Gap(10),
-
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    15,
-                    (context) => Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: ToppingsItem(
-                        ontap: () {
-                          print('Topping ${context + 1} tapped');
-                        },
-                        image: 'assets/test/topping.png',
-                        title: 'Topping ${context + 1}',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Gap(180),
-            ],
-          ),
-        ),
-      ),
-      bottomSheet: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(5),
-            topRight: Radius.circular(5),
-          ),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.white,
-              blurRadius: 20,
-              offset: Offset(0, 1),
+    return Skeletonizer(
+      enabled: widget.productImage.isEmpty,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          scrolledUnderElevation: 0.0,
+          toolbarHeight: 18,
+          leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Icon(
+              Icons.arrow_circle_left_outlined,
+              size: 20,
+              color: AppColors.primary,
             ),
-          ],
+          ),
         ),
-        height: 130,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: TotalBar(total: 30, title: 'Checkout', onAddToCart: () {}),
+
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SpicySlider(
+                  value: value,
+                  img: widget.productImage,
+                  onChanged: (v) => setState(() => value = v),
+                ),
+
+                Gap(40),
+                CustomText(text: 'Toppings', size: 18),
+                Gap(10),
+                SingleChildScrollView(
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(toppings?.length ?? 4, (index) {
+                      final isSelected = selectedToppingIndex == index;
+                      final topping = toppings?[index];
+                      if (topping == null) {
+                        return CupertinoActivityIndicator();
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: ToppingCard(
+                          color: isSelected
+                              ? Colors.green.withOpacity(0.2)
+                              : AppColors.primary.withOpacity(0.1),
+                          title: topping.name,
+                          imageUrl: topping.image,
+                          onAdd: () =>
+                              setState(() => selectedToppingIndex = index),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+
+                Gap(25),
+                CustomText(text: 'Side Options', size: 18),
+                Gap(10),
+                SingleChildScrollView(
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(options?.length ?? 4, (index) {
+                      final isSelected = selectedToppingIndex == index;
+
+                      final option = options?[index];
+                      if (option == null) {
+                        return CupertinoActivityIndicator();
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: ToppingCard(
+                          color: isSelected
+                              ? Colors.green.withOpacity(0.2)
+                              : AppColors.primary.withOpacity(0.1),
+                          imageUrl: option.image,
+                          title: option.name,
+                          onAdd: () =>
+                              setState(() => selectedToppingIndex = index),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                Gap(200),
+              ],
+            ),
+          ),
+        ),
+
+        bottomSheet: Container(
+          height: 150,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.primary.withOpacity(0.7),
+                AppColors.primary,
+                AppColors.primary,
+                AppColors.primary,
+                AppColors.primary,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(30),
+          ),
+
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: 'Burger Price :',
+                      size: 15,
+                      color: Colors.white,
+                    ),
+                    CustomText(
+                      text: '\$ 18.9',
+                      size: 20,
+                      color: Colors.white,
+                      weight: FontWeight.w700,
+                    ),
+                  ],
+                ),
+                CustomButton(
+                  widget: Icon(CupertinoIcons.cart_badge_plus),
+                  gap: 10,
+                  height: 48,
+                  color: Colors.white,
+                  textColor: AppColors.primary,
+                  text: 'Add To Cart',
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

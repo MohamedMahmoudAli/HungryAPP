@@ -1,41 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hungry/core/constants/app_colors.dart';
 import 'package:hungry/shared/customText.dart';
 
-class Custombutton extends StatelessWidget {
-  const Custombutton({
+class CustomButton extends StatelessWidget {
+  const CustomButton({
     super.key,
-    this.ontap,
     required this.text,
-    this.color,
+    this.onTap,
     this.width,
-    this.textcolor,
+    this.color,
+    this.height,
+    this.radius,
+    this.textColor,
+    this.widget,
+    this.gap,
   });
-  final Function()? ontap;
+
   final String text;
-  final Color? color;
+  final Function()? onTap;
   final double? width;
-  final Color? textcolor;
+  final double? height;
+  final Color? color;
+  final double? radius;
+  final Color? textColor;
+  final Widget? widget;
+  final double? gap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ontap,
+      onTap: onTap,
       child: Container(
-        width: double.infinity,
-        height: 55,
+        width: width,
+        height: height ?? 50,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: color ?? AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: textcolor ?? AppColors.primaryColor),
+          color: color ?? AppColors.primary,
+          borderRadius: BorderRadius.circular(radius ?? 10),
         ),
-        child: Center(
-          child: Customtext(
-            text: text,
-            color: textcolor ?? Colors.white,
-            size: 25,
-            fontWeight: FontWeight.bold,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomText(
+              text: text,
+              color: textColor ?? Colors.white,
+              size: 14,
+              weight: FontWeight.w500,
+            ),
+            Gap(gap ?? 0.0),
+            widget ?? SizedBox.shrink(),
+          ],
         ),
       ),
     );

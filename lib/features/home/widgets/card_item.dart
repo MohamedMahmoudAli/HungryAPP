@@ -33,15 +33,15 @@ class CardItem extends StatelessWidget {
                   child: Image.asset("assets/logo/shade.png"),
                 ),
 
-                Center(child: Image.asset(image, width: 120, height: 120)),
+                Center(child: Image.network(image, width: 120, height: 120)),
               ],
             ),
             Gap(10),
-            Customtext(text: name, fontWeight: FontWeight.w600, size: 16),
-            Customtext(text: desc, fontWeight: FontWeight.w300, size: 16),
+            CustomText(text: name, weight: FontWeight.w600, size: 16),
+            CustomText(text: desc, weight: FontWeight.w300, size: 16),
             Row(
               children: [
-                Customtext(text: rate),
+                CustomText(text: rate),
                 Spacer(),
                 IconButton(
                   onPressed: () {},

@@ -11,30 +11,47 @@ class UserHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SvgPicture.asset(
-              "assets/logo/hungry.svg",
-              color: AppColors.primaryColor,
-              height: 35,
+            Row(
+              children: [
+                CustomText(
+                  text: 'Hello,',
+                  size: 30,
+                  weight: FontWeight.w400,
+                  color: Colors.grey.shade500,
+                ),
+                CustomText(
+                  text: ' Rich Sonic',
+                  size: 30,
+                  weight: FontWeight.w200,
+                  color: AppColors.primary,
+                ),
+              ],
             ),
-            Gap(5),
-            Customtext(
-              text: 'Hello, Rich Sonic',
-              size: 18,
-              fontWeight: FontWeight.w500,
+            // SvgPicture.asset(
+            //     'assets/logo/logo.svg',
+            //     color: AppColors.primary,
+            //     height: 28,
+            // ),
+            CustomText(
+              text: 'Hungry Today?',
+              size: 14,
+              weight: FontWeight.w500,
               color: Colors.grey.shade500,
             ),
           ],
         ),
         Spacer(),
         CircleAvatar(
-          backgroundColor: AppColors.primaryColor,
           radius: 30,
-          child: Icon(Icons.person, color: Colors.white, size: 40),
+          backgroundColor: AppColors.primary,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: Image.asset('assets/test/avatar.png'),
+          ),
         ),
       ],
     );

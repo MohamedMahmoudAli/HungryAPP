@@ -52,7 +52,7 @@ class TotalBar extends StatelessWidget {
               width: 150,
               height: 50,
               decoration: BoxDecoration(
-                color: AppColors.primaryColor,
+                color: AppColors.primary,
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
