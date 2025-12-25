@@ -1,3 +1,4 @@
+import 'package:hungry/core/network/api_error.dart';
 import 'package:hungry/core/network/api_services.dart';
 import 'package:hungry/features/home/data/model/product_model.dart';
 import 'package:hungry/features/home/data/model/topping_model.dart';
@@ -45,6 +46,18 @@ class ProductRepo {
   }
 
   /// search
+  ///
+  Future<List<ProductModel>> searchProducts(String name) async {
+    try {
+      final res = await _apiService.get("products", params: {"name": name});
+      return (res['data'] as List)
+          .map((product) => ProductModel.fromJson(product))
+          .toList();
+    } catch (e) {
+      ApiError(message: e.toString());
+      return [];
+    }
+  }
 
   ///  category
 }

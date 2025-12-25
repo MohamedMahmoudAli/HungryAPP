@@ -21,9 +21,11 @@ class ProductDetailsView extends StatefulWidget {
     super.key,
     required this.productImage,
     required this.productId,
+    required this.productPrice,
   });
   final String productImage;
   final int productId;
+  final String productPrice;
 
   @override
   State<ProductDetailsView> createState() => _ProductDetailsViewState();
@@ -208,7 +210,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       color: Colors.white,
                     ),
                     CustomText(
-                      text: '\$ 18.9',
+                      text: widget.productPrice ?? '\$ 0.0',
                       size: 20,
                       color: Colors.white,
                       weight: FontWeight.w700,

@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hungry/core/constants/app_colors.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key});
+  const SearchField({super.key, required this.controller, this.onchanged});
+  final TextEditingController controller;
+  final Function(String)? onchanged;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 60,
       child: TextField(
+        onChanged: onchanged,
         cursorHeight: 15,
         decoration: InputDecoration(
           filled: true,

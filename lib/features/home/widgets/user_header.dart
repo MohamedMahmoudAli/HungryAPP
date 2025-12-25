@@ -6,7 +6,8 @@ import 'package:hungry/core/constants/app_colors.dart';
 import 'package:hungry/shared/customText.dart';
 
 class UserHeader extends StatelessWidget {
-  const UserHeader({super.key});
+  const UserHeader({super.key, required this.name, required this.image});
+  final String name, image;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class UserHeader extends StatelessWidget {
                   color: Colors.grey.shade500,
                 ),
                 CustomText(
-                  text: ' Rich Sonic',
+                  text: ' $name',
                   size: 30,
                   weight: FontWeight.w200,
                   color: AppColors.primary,
@@ -50,7 +51,13 @@ class UserHeader extends StatelessWidget {
           backgroundColor: AppColors.primary,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
-            child: Image.asset('assets/test/avatar.png'),
+            child: Image.network(
+              image,
+              fit: BoxFit.cover,
+
+              errorBuilder: (context, err, builder) =>
+                  Icon(Icons.person, color: Colors.white),
+            ),
           ),
         ),
       ],

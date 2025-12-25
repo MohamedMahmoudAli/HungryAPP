@@ -69,11 +69,7 @@ class _RootState extends State<Root> with TickerProviderStateMixin {
       canPop: false,
       child: Scaffold(
         extendBody: true,
-        body: PageView(
-          controller: controller,
-          physics: NeverScrollableScrollPhysics(),
-          children: screens,
-        ),
+        body: IndexedStack(index: currentScreen, children: screens),
         bottomNavigationBar: GlassBottomNavBar(
           currentIndex: currentScreen,
           onTap: _onTabTapped,

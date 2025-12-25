@@ -17,6 +17,7 @@ class CartItem extends StatelessWidget {
     this.onAdd,
     this.onMin,
     this.onRemove,
+    required this.isloading,
     required this.number,
   });
   final String image, text, desc;
@@ -24,6 +25,7 @@ class CartItem extends StatelessWidget {
   final Function()? onMin;
   final Function()? onRemove;
   final int number;
+  final bool isloading;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +81,7 @@ class CartItem extends StatelessWidget {
                 ],
               ),
               Gap(20),
+
               GestureDetector(
                 onTap: onRemove,
                 child: Container(
@@ -89,7 +92,9 @@ class CartItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
-                    child: CustomText(text: 'Remove', color: Colors.white),
+                    child: isloading
+                        ? CupertinoActivityIndicator(color: Colors.white)
+                        : CustomText(text: 'Remove', color: Colors.white),
                   ),
                 ),
               ),

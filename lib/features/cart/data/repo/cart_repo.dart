@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:hungry/core/network/api_error.dart';
 import 'package:hungry/core/network/api_services.dart';
 import 'package:hungry/features/cart/data/model/cart_model.dart';
@@ -24,6 +23,17 @@ class CartRepo {
         throw ApiError(message: res.message);
       }
       return GetCartResponse.fromJson(res);
+    } catch (e) {
+      throw ApiError(message: e.toString());
+    }
+  }
+
+  Future<void> RemoveCartItem(int id) async {
+    try {
+      final res = await apiService.delete("/cart/remove/$id", {});
+      if (res['code'] == 200 && res['data'] == null) {
+        throw ApiError(message: res['message']);
+      }
     } catch (e) {
       throw ApiError(message: e.toString());
     }

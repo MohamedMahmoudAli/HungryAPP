@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry/core/constants/app_colors.dart' show AppColors;
+import 'package:hungry/features/auth/data/auth_model.dart';
+import 'package:hungry/features/auth/data/auth_repo.dart';
+import 'package:hungry/features/auth/view/login_view.dart';
 import 'package:hungry/features/cart/Widgets/card_item.dart';
 import 'package:hungry/features/cart/data/model/cart_model.dart';
 import 'package:hungry/features/cart/data/repo/cart_repo.dart';
 import 'package:hungry/features/checkout/view/checkout_view.dart';
 import 'package:hungry/shared/customButton.dart';
 import 'package:hungry/shared/customText.dart';
+import 'package:hungry/shared/custom_snack.dart';
 import 'package:hungry/shared/total_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -20,9 +24,40 @@ class CartView extends StatefulWidget {
 
 class _CartViewState extends State<CartView> {
   final int itemCount = 9;
+  bool isGuest = false;
+
   late List<int> quantities;
   GetCartResponse? getCartResponse;
   CartRepo cartRepo = CartRepo();
+  bool isloadingremove = false;
+  AuthRepo authRepo = AuthRepo();
+  UserModel? userModel;
+
+  Future<void> autoLogin() async {
+    final user = await authRepo.autoLogin();
+    setState(() => isGuest = authRepo.isGuest);
+    if (user != null) setState(() => userModel = user);
+  }
+
+  Future<void> deleteCartData(int id) async {
+    try {
+      setState(() {
+        isloadingremove = true;
+      });
+      final res = await cartRepo.RemoveCartItem(id);
+      getCart();
+      setState(() {
+        isloadingremove = false;
+      });
+      customSnack("suscess");
+    } catch (e) {
+      setState(() {
+        isloadingremove = false;
+      });
+      customSnack(e.toString());
+    }
+  }
+
   Future<void> getCart() async {
     try {
       final res = await cartRepo.GetCart();
@@ -39,6 +74,7 @@ class _CartViewState extends State<CartView> {
 
   @override
   void initState() {
+    autoLogin();
     getCart();
     quantities = List.generate(itemCount, (_) => 1);
     super.initState();
@@ -60,9 +96,9 @@ class _CartViewState extends State<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    return Skeletonizer(
-      enabled: getCartResponse == null,
-      child: Scaffold(
+    if (getCartResponse == null) return CupertinoActivityIndicator();
+    if (!isGuest)
+      return Scaffold(
         appBar: AppBar(
           toolbarHeight: 30,
           scrolledUnderElevation: 0.0,
@@ -109,12 +145,16 @@ class _CartViewState extends State<CartView> {
                         ],
                       ),
                       child: CartItem(
+                        isloading: isloadingremove,
                         image: item.image,
                         text: item.name,
                         desc: item.name,
                         number: quantities[index],
                         onAdd: () => onAdd(index),
                         onMin: () => onMin(index),
+                        onRemove: () async {
+                          await deleteCartData(item.itemId);
+                        },
                       ),
                     ),
                   );
@@ -164,13 +204,23 @@ class _CartViewState extends State<CartView> {
                     GestureDetector(
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => CheckoutView()),
+                        MaterialPageRoute(
+                          builder: (_) => CheckoutView(
+                            totalPrice:
+                                "${getCartResponse!.cartData.totalPrice}",
+                          ),
+                        ),
                       ),
                       child: CustomButton(
                         height: 45,
                         text: 'Checkout',
                         gap: 80,
-                        widget: CustomText(text: '230\$', size: 14),
+                        widget: CustomText(
+                          text:
+                              '${getCartResponse!.cartData.totalPrice}' ??
+                              "0.0",
+                          size: 14,
+                        ),
                         color: Colors.white,
                         width: double.infinity,
                         textColor: Colors.black,
@@ -182,7 +232,26 @@ class _CartViewState extends State<CartView> {
             ),
           ],
         ),
-      ),
-    );
+      );
+    else if (isGuest) {
+      return Padding(
+        padding: const EdgeInsets.all(40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(child: Text('Guest Mode')),
+            Gap(20),
+            CustomButton(
+              onTap: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (c) => LoginView()),
+              ),
+              text: 'Go to Login',
+            ),
+          ],
+        ),
+      );
+    }
+    return SizedBox();
   }
 }

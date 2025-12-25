@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -141,7 +140,7 @@ class _SignupViewState extends State<SignupView> {
                             ),
                             Gap(15),
 
-                            /// Guest
+                            /// Guooest
                             Expanded(
                               child: CustomAuthBtn(
                                 color: Colors.transparent,

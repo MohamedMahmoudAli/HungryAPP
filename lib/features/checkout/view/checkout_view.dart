@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry/core/network/api_error.dart';
+import 'package:hungry/features/auth/data/auth_model.dart';
+import 'package:hungry/features/auth/data/auth_repo.dart';
 import 'package:hungry/features/checkout/widgets/orderDetails.dart';
 import 'package:hungry/features/checkout/widgets/order_summary_widget.dart';
 import 'package:hungry/features/checkout/widgets/succes_dialog.dart'
     show PaymentSuccessView, ScuessDialog;
 import 'package:hungry/shared/customText.dart';
+import 'package:hungry/shared/custom_snack.dart';
 import 'package:hungry/shared/total_bar.dart';
 
 class CheckoutView extends StatefulWidget {
-  const CheckoutView({super.key});
+  CheckoutView({super.key, required this.totalPrice});
+  final String totalPrice;
 
   @override
   State<CheckoutView> createState() => _CheckoutViewState();
@@ -16,6 +21,29 @@ class CheckoutView extends StatefulWidget {
 
 class _CheckoutViewState extends State<CheckoutView> {
   String selectedmethod = 'Cash';
+  AuthRepo authRepo = AuthRepo();
+
+  UserModel? userModel;
+  Future<void> getProfileData() async {
+    try {
+      final user = await authRepo.getProfileData();
+      setState(() {
+        userModel = user;
+      });
+    } catch (e) {
+      String errorMsg = 'Error in Profile';
+      if (e is ApiError) {
+        errorMsg = e.message;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(customSnack(errorMsg));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getProfileData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +65,10 @@ class _CheckoutViewState extends State<CheckoutView> {
             CustomText(text: "Order summary", size: 20),
             Gap(20),
             Orderdetails(
-              order: '16.48',
+              order: widget.totalPrice,
               Taxes: '.3',
               delievrFees: '1.5',
-              total: '20',
+              total: '${double.parse(widget.totalPrice) + 0.3 + 1.5 + 40}',
               deliveryTime: '15 - 30 mins',
             ),
 
@@ -78,34 +106,36 @@ class _CheckoutViewState extends State<CheckoutView> {
               ),
             ),
             Gap(10),
-            ListTile(
-              onTap: () {
-                setState(() {
-                  selectedmethod = 'Visa';
-                });
-              },
-              leading: Image.asset("assets/test/visa.png"),
-              tileColor: Colors.blue.shade600,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              contentPadding: EdgeInsets.all(10),
-              title: CustomText(text: "Debit Card", color: Colors.white),
-              subtitle: CustomText(
-                text: "**** **** 22222",
-                color: Colors.white,
-              ),
-              trailing: Radio<String>(
-                value: "Visa",
-                activeColor: Colors.white,
-                groupValue: selectedmethod,
-                onChanged: (v) {
-                  setState(() {
-                    selectedmethod = v!;
-                  });
-                },
-              ),
-            ),
+            userModel?.visa == null
+                ? SizedBox.shrink()
+                : ListTile(
+                    onTap: () {
+                      setState(() {
+                        selectedmethod = 'Visa';
+                      });
+                    },
+                    leading: Image.asset("assets/test/visa.png"),
+                    tileColor: Colors.blue.shade600,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    contentPadding: EdgeInsets.all(10),
+                    title: CustomText(text: "Debit Card", color: Colors.white),
+                    subtitle: CustomText(
+                      text: "${userModel!.visa}?? **** **** 0022",
+                      color: Colors.white,
+                    ),
+                    trailing: Radio<String>(
+                      value: "Visa",
+                      activeColor: Colors.white,
+                      groupValue: selectedmethod,
+                      onChanged: (v) {
+                        setState(() {
+                          selectedmethod = v!;
+                        });
+                      },
+                    ),
+                  ),
 
             Row(
               children: [
@@ -140,7 +170,7 @@ class _CheckoutViewState extends State<CheckoutView> {
         ),
         height: 100,
         child: TotalBar(
-          total: 45.99,
+          total: double.parse(widget.totalPrice) + 0.3 + 1.5 + 40,
           title: "Pay Now",
           onAddToCart: () {
             print("========================");
