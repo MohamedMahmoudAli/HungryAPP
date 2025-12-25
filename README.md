@@ -28,12 +28,9 @@
 
 ## Screenshots
 
-*(Replace with your actual app screenshots)*
-
 | Home Screen | Cart & Checkout | Payment Screen |
 |------------|----------------|----------------|
-| ![home](https://via.placeholder.com/200x400) | ![cart](https://via.placeholder.com/200x400) | ![payment](https://via.placeholder.com/200x400) |
-
+| ![Home Screen](assets/readme/Screenshot_٢٠٢٥١٢٢٢-٠٨٢٧٤٨.png) | ![Cart & Checkout](assets/readme/Screenshot_٢٠٢٥١٢٢٢-٠٨٣٠٢٥.png) | ![Payment Screen](assets/readme/Screenshot_٢٠٢٥١٢٢٢-٠٨٣٠٣٨.png) |
 ---
 
 ## Workflow Diagram
