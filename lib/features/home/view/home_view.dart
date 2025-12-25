@@ -112,8 +112,10 @@ class _HomeViewState extends State<HomeView> {
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (c) =>
-                                ProductDetailsView(productImage: product.image),
+                            builder: (c) => ProductDetailsView(
+                              productImage: product.image,
+                              productId: product.id,
+                            ),
                           ),
                         ),
                         child: CardItem(

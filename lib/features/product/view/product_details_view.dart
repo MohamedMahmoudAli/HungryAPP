@@ -1,18 +1,29 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry/core/constants/app_colors.dart';
+import 'package:hungry/core/network/api_error.dart';
+import 'package:hungry/features/cart/Widgets/card_item.dart';
+import 'package:hungry/features/cart/data/model/cart_model.dart';
+import 'package:hungry/features/cart/data/repo/cart_repo.dart';
 import 'package:hungry/features/home/data/model/topping_model.dart';
 import 'package:hungry/features/home/data/repo/product_repo.dart';
 import 'package:hungry/features/product/widget/spicy_Slider.dart';
 import 'package:hungry/features/product/widget/toppings_item.dart';
 import 'package:hungry/shared/customButton.dart';
 import 'package:hungry/shared/customText.dart';
+import 'package:hungry/shared/custom_snack.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductDetailsView extends StatefulWidget {
-  const ProductDetailsView({super.key, required this.productImage});
+  const ProductDetailsView({
+    super.key,
+    required this.productImage,
+    required this.productId,
+  });
   final String productImage;
+  final int productId;
 
   @override
   State<ProductDetailsView> createState() => _ProductDetailsViewState();
@@ -20,10 +31,11 @@ class ProductDetailsView extends StatefulWidget {
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
   double value = 0.5;
+  bool isloading = false;
 
   // FIX: Separate the selection variables
-  int? selectedToppingIndex;
-  int? selectedOptionIndex;
+  List<int> selectedToppingIndex = [];
+  List<int> selectedOptionIndex = [];
 
   List<ToppingModel>? toppings;
   List<ToppingModel>? options;
@@ -44,6 +56,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     });
   }
 
+  //cart fun
+  CartRepo cartRepo = CartRepo();
+  Future<void> AddToCart() async {}
   @override
   void initState() {
     getToppings();
@@ -89,11 +104,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: List.generate(toppings?.length ?? 4, (index) {
-                      final isSelected = selectedToppingIndex == index;
                       final topping = toppings?[index];
+                      final id = topping?.id;
                       if (topping == null) {
                         return CupertinoActivityIndicator();
                       }
+                      final isSelected = selectedToppingIndex.contains(id);
                       return Padding(
                         padding: const EdgeInsets.only(right: 5),
                         child: ToppingCard(
@@ -102,8 +118,15 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               : AppColors.primary.withOpacity(0.1),
                           title: topping.name,
                           imageUrl: topping.image,
-                          onAdd: () =>
-                              setState(() => selectedToppingIndex = index),
+                          onAdd: () {
+                            setState(() {
+                              if (isSelected) {
+                                selectedToppingIndex.remove(id);
+                              } else {
+                                selectedToppingIndex.add(id!);
+                              }
+                            });
+                          },
                         ),
                       );
                     }),
@@ -117,13 +140,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: List.generate(options?.length ?? 4, (index) {
-                      // FIX: Use selectedOptionIndex here
-                      final isSelected = selectedOptionIndex == index;
-
                       final option = options?[index];
+                      final id = option?.id ?? 1;
                       if (option == null) {
                         return CupertinoActivityIndicator();
                       }
+
+                      final isSelected = selectedOptionIndex.contains(id);
 
                       return Padding(
                         padding: const EdgeInsets.only(right: 8),
@@ -134,8 +157,15 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           imageUrl: option.image,
                           title: option.name,
                           // FIX: Update selectedOptionIndex here
-                          onAdd: () =>
-                              setState(() => selectedOptionIndex = index),
+                          onAdd: () {
+                            setState(() {
+                              if (isSelected) {
+                                selectedOptionIndex.remove(id);
+                              } else {
+                                selectedOptionIndex.add(id);
+                              }
+                            });
+                          },
                         ),
                       );
                     }),
@@ -186,13 +216,42 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   ],
                 ),
                 CustomButton(
-                  widget: Icon(CupertinoIcons.cart_badge_plus),
+                  widget: isloading
+                      ? CupertinoActivityIndicator(color: AppColors.primary)
+                      : Icon(CupertinoIcons.cart_badge_plus),
                   gap: 10,
                   height: 48,
                   color: Colors.white,
                   textColor: AppColors.primary,
                   text: 'Add To Cart',
-                  onTap: () {},
+                  onTap: () async {
+                    try {
+                      setState(() {
+                        isloading = true;
+                      });
+                      final CartItem = CartModel(
+                        productId: widget.productId,
+                        qty: 1,
+                        spicy: value,
+                        toppings: selectedToppingIndex,
+                        options: selectedToppingIndex,
+                      );
+                      await cartRepo.addToCart(
+                        CartRequestModel(items: [CartItem]),
+                      );
+                      setState(() {
+                        isloading = false;
+                      });
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(customSnack("Add to cart sucess "));
+                    } catch (e) {
+                      setState(() {
+                        isloading = false;
+                      });
+                      print("**************************************");
+                    }
+                  },
                 ),
               ],
             ),
