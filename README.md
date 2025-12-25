@@ -32,9 +32,10 @@
 
 | Home Screen | Cart & Checkout | Payment Screen |
 |------------|----------------|----------------|
-| ![home](https://via.placeholder.com/200x400) | ![cart](https://via.placeholder.com/200x400) | ![payment](https://via.placeholder.com/200x400) |
+| ![home](assets/readme/Screenshot_٢٠٢٥١٢٢٢-٠٨٢٧٤٨.png) | ![cart](assets/readme/Screenshot_٢٠٢٥١٢٢٢-٠٨٣٠٢٥.png) | ![payment](assets/readme/Screenshot_٢٠٢٥١٢٢٢-٠٨٣٠٣٨.png) |
 
 ---
 
 ## Workflow Diagram
+
 
